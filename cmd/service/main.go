@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"jobQeue/internal/job"
 	"time"
 )
@@ -9,13 +8,18 @@ import (
 func main() {
 	mainManager := job.NewManager()
 
-	mainManager.NewJob("first task")
+	mainPool := job.NewPool(mainManager)
 
-	fmt.Println(mainManager.Tasks)
+	id := mainManager.NewJob("first task")
+	mainPool.GetID(id)
 
-	go mainManager.Worker()
+	mainPool.StartWorker(mainManager)
 
-	
-	time.Sleep(6 * time.Second)
-	fmt.Println(mainManager.Tasks)
+	defer mainPool.WorkerWait()
+
+	time.Sleep(2 * time.Second)
+	mainManager.GetAllJob()
+	time.Sleep(7 * time.Second)
+	mainManager.GetAllJob()
+
 }
