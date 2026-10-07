@@ -4,6 +4,10 @@ import "sync"
 
 var wg sync.WaitGroup
 
+type Manager interface {
+	EditJob(id int)
+}
+
 type WorkerPool struct {
 	Manager				*JobManager
 	WorkerCount   int
@@ -20,16 +24,16 @@ func NewPool(manager *JobManager) *WorkerPool {
 	}
 }
 
-func (manager *JobManager) Worker(w *WorkerPool) {
+func (w *WorkerPool) Worker(manager Manager) {
 	for id := range w.Ch {
 		manager.EditJob(id)
 		w.wg.Done()
 	}
 }
 
-func (w *WorkerPool) StartWorker(manager *JobManager) {
+func (w *WorkerPool) StartWorker(manager Manager) {
 	for i := 1; i <= w.WorkerCount; i++ {
-		go manager.Worker(w)
+		go w.Worker(manager)
 	}
 }
 

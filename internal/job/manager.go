@@ -59,7 +59,7 @@ func (manager *JobManager) FindJob(id int) (*Job, error){
 		}
 	}
 	manager.mu.Unlock()
-	return nil, fmt.Errorf("ID not found")
+	return nil, fmt.Errorf("ID not found, id have:", id)
 }
 
 func (manager *JobManager) EditJob(id int) {
