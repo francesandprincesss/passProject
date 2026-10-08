@@ -9,14 +9,14 @@ func main() {
 
 	mainManager := job.NewManager()
 
-	mainPool := job.NewPool(mainManager)
+	//manager := &job.JobManager{}
 
-	manager := &job.JobManager{}
+	mainPool := job.NewPool(mainManager)
 
 	id := mainManager.NewJob("first task")
 	mainPool.GetID(id)
 
-	mainPool.StartWorker(manager)
+	mainPool.StartWorker(mainManager)
 
 	defer mainPool.WorkerWait()
 

@@ -6,6 +6,7 @@ var wg sync.WaitGroup
 
 type Manager interface {
 	EditJob(id int)
+	NewJob(string) int
 }
 
 type WorkerPool struct {
